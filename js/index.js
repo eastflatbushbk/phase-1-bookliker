@@ -15,9 +15,10 @@ document.addEventListener("DOMContentLoaded", function() {
             const img = document.createElement('img')
             const ul = document.createElement('ul')
              btn = document.createElement("button")
+             unlikeBtn = document.createElement("button")
             img.src = book.img_url 
             showPanel.appendChild(img)
-            const newUsername = "jay"
+            const newUsername = "Robb"
             ul.innerHTML = book.description
             showPanel.appendChild(ul)
            
@@ -42,14 +43,30 @@ document.addEventListener("DOMContentLoaded", function() {
                         body: JSON.stringify({ users : [...usersList, {username:newUsername}]  })
                 })
                 const li = document.createElement('li')
+                li.setAttribute('id', newUsername.value);
                 li.innerHTML = newUsername
                 showPanel.appendChild(li)
-                unlikeBtn = document.createElement("button")
                 unlikeBtn.innerHTML = "UNLIKE"
                 showPanel.appendChild(unlikeBtn)
             }
 
-            
+            unlikeBtn.onclick = function () {
+              
+                showPanel.removeChild(showPanel.lastChild);
+                
+
+              fetch ((bookUrl + `/${book.id}`) , {
+                  method: 'PATCH',
+                  headers: {
+                      "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({ users : [...usersList]  })
+              })
+              const item = document.getElementById(newUsername.value);
+              showPanel.removeChild(item);
+              btn.innerHTML = "LIKE"
+           showPanel.appendChild(btn)
+          }
            
           }
 
